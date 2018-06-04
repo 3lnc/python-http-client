@@ -120,6 +120,19 @@ class TestClient(unittest.TestCase):
         built_url = self.client._build_url(query_params)
         self.assertEqual(built_url, url)
 
+    @mock.patch('python_http_client.client.Client._make_request')
+    def test__urllib_headers(self, maker):
+        self.client._update_headers({'X-test': 'Test'})
+        self.client.get()
+        request = maker.call_args[0][1]
+        self.assertTrue('X-test' in request.headers)
+
+    @mock.patch('python_http_client.client.Client._make_request')
+    def test__urllib_method(self, maker):
+        self.client.delete()
+        request = maker.call_args[0][1]
+        self.assertEqual(request.get_method(), 'DELETE')
+
     def test__update_headers(self):
         request_headers = {'X-Test': 'Test'}
         self.client._update_headers(request_headers)
