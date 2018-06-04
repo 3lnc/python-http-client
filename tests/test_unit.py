@@ -4,6 +4,12 @@ try:
     import unittest2 as unittest
 except ImportError:
     import unittest
+
+try:
+    import mock
+except ImportError:
+    from unittest import mock
+
 from python_http_client.client import Client
 from python_http_client.exceptions import (
     handle_error,
@@ -122,6 +128,19 @@ class TestClient(unittest.TestCase):
         query_params = {'hello': 0, 'world': 1, 'ztest': [0, 1]}
         built_url = self.client._build_url(query_params)
         self.assertEqual(built_url, url)
+
+    @mock.patch('python_http_client.client.Client._make_request')
+    def test__urllib_headers(self, maker):
+        self.client._update_headers({'X-test': 'Test'})
+        self.client.get()
+        request = maker.call_args[0][1]
+        self.assertTrue('X-test' in request.headers)
+
+    @mock.patch('python_http_client.client.Client._make_request')
+    def test__urllib_method(self, maker):
+        self.client.delete()
+        request = maker.call_args[0][1]
+        self.assertEqual(request.get_method(), 'DELETE')
 
     def test__update_headers(self):
         request_headers = {'X-Test': 'Test'}
