@@ -104,7 +104,7 @@ class Client(object):
         :type url: string
         :return: string
         """
-        return '{0}/v{1}{2}'.format(self.host, str(self._version), url)
+        return '{0}/v{1}{2}'.format(self.host, self._version, url)
 
     def _build_url(self, query_params):
         """Build the final URL to be passed to urllib

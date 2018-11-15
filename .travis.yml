@@ -17,7 +17,10 @@ before_install:
 - pip install pycodestyle
 install:
 - pip install codecov
-- travis_retry pip install coverage
+- if [[ "$TRAVIS_PYTHON_VERSION" == 2.6* ]]; then travis_retry pip install unittest2; fi
+- if [[ "$TRAVIS_PYTHON_VERSION" == 2.6* ]]; then travis_retry pip uninstall -y pbr; fi
+- if [[ "$TRAVIS_PYTHON_VERSION" == 2* ]]; then travis_retry pip install mock; fi
+- if [[ "$TRAVIS_PYTHON_VERSION" != "3.2" ]]; then travis_retry pip install coverage; fi
 - python setup.py install
 - pip install codecov
 script:
