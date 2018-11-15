@@ -90,7 +90,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(default_client.host, self.host)
         self.assertEqual(default_client.request_headers, {})
         self.assertIs(default_client.timeout, None)
-        methods = set(('delete', 'get', 'patch', 'post', 'put'))
+        methods = {'delete', 'get', 'patch', 'post', 'put'}
         self.assertEqual(default_client.methods, methods)
         self.assertEqual(default_client._version, None)
         self.assertEqual(default_client._url_path, [])
@@ -103,7 +103,7 @@ class TestClient(unittest.TestCase):
                         timeout=10)
         self.assertEqual(client.host, self.host)
         self.assertEqual(client.request_headers, request_headers)
-        methods = set(('delete', 'get', 'patch', 'post', 'put'))
+        methods = {'delete', 'get', 'patch', 'post', 'put'}
         self.assertEqual(client.methods, methods)
         self.assertEqual(client._version, 3)
         self.assertEqual(client._url_path, [])
@@ -134,7 +134,7 @@ class TestClient(unittest.TestCase):
         self.client._update_headers({'X-test': 'Test'})
         self.client.get()
         request = maker.call_args[0][1]
-        self.assertTrue('X-test' in request.headers)
+        self.assertIn('X-test', request.headers)
 
     @mock.patch('python_http_client.client.Client._make_request')
     def test__urllib_method(self, maker):

@@ -64,7 +64,7 @@ class Client(object):
     """Quickly and easily access any REST or REST-like API."""
 
     # These are the supported HTTP verbs
-    methods = set(('delete', 'get', 'patch', 'post', 'put'))
+    methods = {'delete', 'get', 'patch', 'post', 'put'}
 
     def __init__(self,
                  host,
