@@ -64,7 +64,7 @@ class Client(object):
     """Quickly and easily access any REST or REST-like API."""
 
     # These are the supported HTTP verbs
-    methods = set(('delete', 'get', 'patch', 'post', 'put'))
+    methods = {'delete', 'get', 'patch', 'post', 'put'}
 
     def __init__(self,
                  host,
@@ -242,7 +242,8 @@ class Client(object):
                     # Don't serialize to a JSON formatted str
                     # if we don't have a JSON Content-Type
                     if 'Content-Type' in self.request_headers and \
-                            self.request_headers['Content-Type'] != 'application/json':
+                            self.request_headers['Content-Type'] != \
+                            'application/json':
                         data = request_body.encode('utf-8')
                     else:
                         self.request_headers.setdefault(
@@ -257,7 +258,9 @@ class Client(object):
                 )
                 request.get_method = lambda: method
 
-                return Response(self._make_request(opener, request, timeout=timeout))
+                return Response(
+                    self._make_request(opener, request, timeout=timeout)
+                )
             return http_request
         else:
             # Add a segment to the URL
